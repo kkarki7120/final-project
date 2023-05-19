@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | Home {% endblock 'title' %}
+{% block body %}
+
+  
+           
+              
+               
+                
+      <section class="reservtion-request">            
+          <div class="container">
+            <div class="row">
+              <div class="features_items">
+                <!--features_items-->
+                <div class="col-9 m-auto">
+                    <h2 class="form-title text-center mb-5"><span>Reserved Vehicle
+                            <hr>
+                        </span></h2>
+                </div>
+              </div>  
+                
+              {% for i in res_vehicle%}
+                
+                <div class="col-sm-11 ml-5 mr-0" >
+                        <div class="row shadow-sm mb-3 mr-0">
+                            <div class="col-sm-4 mr-0 ml-3"><img src="{{i.reserved_vehicle.picture.url  }}" alt="" class="img-fluid" height="240" width="240">
+                            
+                            </div>
+                                
+                                
+                            
+                      
+                            <div class="col-sm-4 ml-5 " button type="button" data-toggle="modal" data-target="#approverejectmodal">
+                                <p> model_name : {{i.reserved_vehicle.model}}</p>
+                                <p> company_name : {{i.reserved_vehicle.company_name}}</p>
+                                <p id="days"></p>
+                                <p id="result"></p>
+                                <p>reserved_date = {{i.pickup_date}} to {{i.dropoff_date}}</p>
+        
+                             </div>
+        
+                            <script>
+                                function calculateDays() {
+                                    var startDate = new Date("{{ i.pickup_date }}"); // Replace with the actual value from your Django model
+                                    var endDate = new Date("{{ i.dropoff_date }}"); // Replace with the actual value from your Django model
+                                    var timeDifference = endDate.getTime() - startDate.getTime();
+                                    var daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+                                    var price = {{i.reserved_vehicle.price}}; // Replace with the actual value from your Django model
+                                    var totalPrice = daysDifference * price;
+                                    document.getElementById("days").innerHTML = "Number of days: " + daysDifference ;
+                                    document.getElementById("result").innerHTML =  "Total Price: Rs. " + totalPrice;
+                                    
+                                }
+                            
+                                window.onload = function() {
+                                    calculateDays();
+                                };
+                            </script> 
+                        
+                            <div class="col fw-bold ml-0 ">
+                              {% if i.completed == True %}
+                              <div class="completed">
+                                <h5>Your Reservation has completed on {{i.completed_date}}.</h5>
+                                <img src="/static/images/succes.jpg" alt="" class="img-fluid"
+                                height="60" width="60">
+                                <button  type="button" class="btn btn-danger ml-5 my-3" data-toggle="modal" data-target="#delete">Delete</button>
+                            </div>
+                                 
+                            {%else%}
+                                <p class="text-center"> Reservation status</p>
+                                <p class="text-center">{{i.reserve_choice}}</p>
+                            {% if i.reserve_choice == "Pending"%}
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="0"
+                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                      
+                                    <!-- user info modal-->
+                                </div>
+                                <button type="button" class="btn btn-danger my-5 mx-4" data-bs-toggle="modal" data-bs-target="#exampleModal">Cancel</button>
+                                <button type="button" class="btn btn-primary my-5 mx-4 " data-bs-toggle="modal" data-bs-target="#example">Vendor Info</button>
+                                </div>
+                               
+        
+                            {% elif i.reserve_choice == "Accepted"%}
+                            <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width:100%; background:green" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <!-- user info modal-->
+                                </div>
+                                <button type="button" class="btn btn-danger my-5" data-bs-toggle="modal" data-bs-target="#exampleModal">Cancel</button>
+                                <button type="button" class="btn btn-primary my-5 " data-bs-toggle="modal" data-bs-target="#example">Vendor Info</button>
+                               
+    
+                            {%elif i.reserve_choice == "Rejected" %}
+                            <div class="progress">
+                                      <div class="progress-bar" role="progressbar" style="width:100%; background:red"
+                                          aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                      </div>
+                                  </div>
+                                  <button  type="button" class="btn btn-danger  my-3" onclick="openPopup()" style="margin-left: 120px;">Delete</button>
+                            {%endif%}
+                           
+                            <style>
+                              /* Style the popup box */
+                              .popup {
+                                display: none;
+                                position: fixed;
+                                z-index: 1;
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                height: 100%;
+                                overflow: auto;
+                                background-color: rgba(0,0,0,0.4);
+                              }
+                              
+                              /* Style the popup content */
+                              .popup-content {
+                                background-color: #fefefe;
+                                margin: 15% auto;
+                                padding: 20px;
+                                border: 1px solid #888;
+                                width: 80%;
+                                text-align: center;
+                              }
+                              
+                              /* Style the close button */
+                              .close {
+                                color: #aaa;
+                                float: right;
+                                font-size: 28px;
+                                font-weight: bold;
+                              }
+                              
+                              .close:hover,
+                              .close:focus {
+                                color: black;
+                                text-decoration: none;
+                                cursor: pointer;
+                              }
+                            </style>
+                            
+                        
+                            <!-- The delete popup box -->
+                            <div id="popup" class="popup">
+                              <div class="popup-content">
+                                <span class="close" onclick="closePopup()">&times;</span>
+                                <p>Are you sure you want to delete this item?</p>
+                                <button type="button" class="btn btn-danger"><a href="delete/{{i.id}}" class="text-white">Delete</a></button>
+                              </div>
+                            </div>
+                        
+                            <script>
+                              function openPopup() {
+                                document.getElementById("popup").style.display = "block";
+                              }
+                        
+                              function closePopup() {
+                                document.getElementById("popup").style.display = "none";
+                              }
+                            </script>
+                          
+                         
+                            
+                           {%endif%}
+                    
+              </div>
+             
+           </div>
+           </div>
+           </div>
+           </div>  
+            
+                
+               
+     
+
+
+           
+  
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure you want to Cancle your request?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger " data-bs-dismiss="modal"><a href="delete/{{i.id}}" class="text-white">Delete</a></button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="example" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card card-table">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table
+                                    class="table table-hover table-center mb-0 datatable">
+                                    <thead>
+                                        <tr>
+                                         <th>Reservation date</th>
+                                            <th>profile_pic</th>
+                                            <th>full_name</th>
+                                            <th>phone</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>{{i.reserved_date}}</th>
+                                            <th>
+                                                <img src="{{i.reserved_vehicle.user.profile_pic.url}}"
+                                                    alt="" class="img-fluid">
+                                            </th>
+                                            
+                                            <th>{{i.reserved_vehicle.user.fullname}}</th>
+                                            <th>{{i.reserved_vehicle.user.phone}}</th>
+                                         </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+ 
+  
+
+  
+            <!--features_items-->
+        
+            {%endfor%}
+
+  </section>
+{% endblock body %}

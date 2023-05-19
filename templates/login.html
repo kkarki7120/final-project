@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | LogIn {% endblock 'title' %}
+{% block body %}
+<section class="login">
+    <div class="log-alert">
+    <h4>Welcome! We are happy to have you back.</h4>
+  </div>
+    <div class="login-container">
+      <div class="log-img">
+        <div class="log-text">
+        <h1>Don't have an Account?</h2>
+      </div>
+      <a href="{% url 'register' %}"><button type="button" class="btn btn-primary">Register</button></a>
+      </div>
+      <form  action="{% url 'login' %}" method="post" class="login-form">
+        {% csrf_token %}
+        {% if error%}
+        <div class="alert alert-danger" role='alert'>
+          {{error}}
+        </div>
+        {% endif %}
+        
+          <div class="input-box">
+            <span class="details">Email</span>
+            <input type="email" value="{{values.email}}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email"
+             placeholder="Enter email">
+          <small id="emailHelp" value="{{values.password}}" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+          <div class="input-box">
+            <span class="details">Password</span>
+            <input type="password" class="form-control m-0" id="exampleInputPassword1" name="password" placeholder="Password">
+          </div>
+  
+          <button type="submit" class="btn btn-success">Submit</button>
+  
+      </form>
+    </div>
+    </section>
+
+{% endblock body %}

@@ -1,0 +1,98 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | Vehicles - Feedback  {% endblock 'title' %}
+{% block body %}
+
+<main id="main" class="main">
+    <form method="POST" action="{% url 'feedback'%}" enctype='multipart/form-data' >
+        {% csrf_token %}
+
+        <div class="col-12 ">
+          <h2 class="form-title text-center mb-5"><span>Feedback<hr></span></h2>
+          <div class="col-auto text-right float-right ml-auto">
+              <button  button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class='bx bxs-message-rounded-dots'></i>&nbsp;&nbsp; Feedback History</button>
+              </div>
+
+        </div>
+        {% if messages %}
+        {% for message in messages%}
+        {% if message.tags == 'error' %}
+        <div class="col-12 col-sm-6 m-auto  alert alert-danger " role="alert">
+            {{message}}
+          </div>
+          {% endif %}
+          {% endfor%}
+        {% endif%}
+        {% if messages %}
+        {% for message in messages%}
+        {% if message.tags == 'success' %}
+        <div class="col-12 col-sm-6 m-auto alert alert-success" role="alert">
+            {{message}}
+          </div>
+          {% endif %}
+          {% endfor%}
+        {% endif%}
+    <div class=" m-4 "> 
+      <h4>Send Feedback to admin</h4>
+      <div class="mb-4 col-sm-8">
+        <label for="exampleFormControlTextarea1" class="form-label">Messege:</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="vendor_msg" rows="5"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send Feedback</button>
+    </div>
+    </form>
+
+
+    <div class="modal fade modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title">Feedback History</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card card-table">
+                        <div class="card-body">
+                           <div class="table-responsive">
+                              <table class="table table-hover table-center mb-0 datatable">
+                                 <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      <th>Feedback</th>
+                                      <th>Feedback_Reply by Admin</th>
+                                   </tr>
+                                  
+                                 </thead>
+                                 <tbody>
+                                  {% for i in feedback%}
+                                  <tr>
+                                     <th>{{i.id}}</th>
+                                     <th>{{i.feedback}}</th>
+                                     {% if i.feedback_reply == "" %}
+                                     <td><span class="badge badge-danger">No Reply</span></td>
+                                     {% else %}
+                                     <td><span class="badge badge-info">{{i.feedback_reply}}</span></td>
+                             
+                                  </tr>
+                                  {% endif %}
+                                  {% endfor %}
+                                 </tbody>
+                              </table>
+                           </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  
+    </main><!-- End #main -->
+
+{% endblock body %}

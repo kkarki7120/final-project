@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | Home {% endblock 'title' %}
+{% block body %}
+
+<section class="s-vehicle">
+    
+    
+  <div class="searched_vehicle"  >
+    <div class="search-filter ">
+        <h5>vehicles found:{{vehicle_count}}</h5>
+      <div class="filter">
+        <h5>Filters</h5>
+
+        
+        <div class="header dropdown">
+            <button  href="#" data-bs-toggle="dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort By : Price </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li><a class="dropdown-item" href="/vehicle/{% for i in vehicle %}?Price_LOWTOHIGH={{i.id}}{% endfor%}">Price, low to high</a></li>
+                <li><a class="dropdown-item" href="/vehicle/{% for i in vehicle %}?Price_HIGHTOLOW={{i.id}}{% endfor%}">Price, high to low</a></li>
+            </ul>
+        </div>
+
+    
+        
+         
+    
+    
+   
+    <div class="category">
+        <h5>Category</h5>
+        {% for type in vehicle_type%}
+        <a href="/vehicle/?category={{type.id}}">{{type.name}}({{type.type}})</a>
+        {% endfor%}
+    </div>
+
+    <div class="brand">
+        <h5>Brand</h5>
+        {% for type in brands_type%}
+        <a href="/vehicle/?brand={{type.id}}">{{type.name}}({{type.type}})</a>
+        {% endfor %}
+    </div>
+
+</div>
+   </div>
+
+   {% if vehicle %}
+   
+   <div class="search-cont">
+    <div class="heading">
+        <h2>Choose your Services</h2>
+       </div>
+    {% for i in vehicle%}
+  <div class="services-container">
+    <div class="box">
+        <div class="box-img">
+            <img src="{{ i.picture.url}}" alt="" width="300px" height="200px">
+            <h5 >{{i.vehicle_number}}</h5>
+         <div class="box-cont"></div>
+            <div class="box-icon">
+                <div class="icon">
+                <i class='bx bxs-user'></i>
+                <p>Seats:{{i.no_of_seats}}</p>
+                </div>
+                <div class="icon">
+                <i class='bx bxs-gas-pump'></i>
+                <p>Fuel Type: {{i.fuel_type}}</p>
+                </div>
+                <div class="icon">
+                <i class='bx bxs-car'></i>
+                <p>vehicle Type: {{i.vehicle_type}}</p>
+                </div>
+            </div>
+            <div class="box-icon">
+                <div class="icon">
+                <i class='bx bxs-cog'></i>
+                <p>Gear Type: {{i.gear}}</p>
+                </div>
+                <div class="icon">
+                <i class='bx bxs-palette' ></i>
+                <p>Color: {{i.color}}</p>
+                </div>
+                <div class="icon">
+                <i class='bx bxs-checkbox-checked'></i>
+                <p>Status: {{i.status}}</p>
+                </div>          
+            </div>
+         </div>
+         <div class="box-text">
+            <h3>{{i.model}}|({{i.company_name}})</h3>
+            <h4>Price for one day: <span>Rs.{{i.price}}</span></h4>
+            <a href="{{i.slug}}" class="white"><button class="btn" type="submit" name="" id="">view deal</button></a>
+        </div>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+   
+ 
+ 
+
+
+
+
+{% else %}
+<div >
+    <img class="img-no-vec" src="/static/images/Warning.png" width="250px" height="250px">  
+   <div class="no-vehicle">
+    
+ 
+    <h4>There is no vehicle avialable for your entered seats.</h4>
+    <h4>You can choose other similar vehicles from below.</h4>
+    <h5>Thank you!! Have a Nice Day</h5>
+   </div>
+</div>
+{% endif %}
+</div>
+
+<div class="similar-vehicle">
+    <hr style="border: 2px solid black;">
+    <h3 class="text-center"> Similar vehicles</h3>
+    <div class="search-cont">
+        <div class="search-cont">
+               
+    {% for j in similar_vehicle %}
+    <div class="services-container">
+        <div class="box">
+            <div class="box-img">
+                <img src="{{ j.picture.url}}" alt="" width="300px" height="200px">
+                <h5 >{{j.vehicle_number}}</h5>
+             <div class="box-cont"></div>
+                <div class="box-icon">
+                    <div class="icon">
+                    <i class='bx bxs-user'></i>
+                    <p>Seats:{{j.no_of_seats}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-gas-pump'></i>
+                    <p>Fuel Type: {{j.fuel_type}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-car'></i>
+                    <p>vehicle Type: {{j.vehicle_type}}</p>
+                    </div>
+                </div>
+                <div class="box-icon">
+                    <div class="icon">
+                    <i class='bx bxs-cog'></i>
+                    <p>Gear Type: {{j.gear}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-palette' ></i>
+                    <p>Color: {{j.color}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-checkbox-checked'></i>
+                    <p>Status: {{j.status}}</p>
+                    </div>          
+                </div>
+             </div>
+             <div class="box-text">
+                <h3>{{j.model}}|({{j.company_name}})</h3>
+                <h4>Price for one day: <span>Rs.{{j.price}}</span></h4>
+                <a href="{{j.slug}}" class="white"><button class="btn" type="submit" name="" id="">view deal</button></a>
+            </div>
+            </div>
+        </div>
+    
+    {% endfor %}
+  </div>
+  </div>
+
+
+    </section>
+
+{% endblock %}

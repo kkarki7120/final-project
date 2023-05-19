@@ -1,0 +1,227 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | Vehicles - Edit Vehicle  {% endblock 'title' %}
+{% block body %}
+<!--body part-->
+    <section class="page-title bg-1" >
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="block text-center">
+                        <span class="text-white">
+                            <ul class="list-inline breadcumb-nav">
+                                <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+                                <li class="list-inline-item"><span class="text-white">/</span></li>
+                                <li class="list-inline-item"><a href="#" class="text-white-50">Vehicle Reservation </a></li>
+                            </ul>
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Main Content -->
+
+<section class="reservtion-request">
+    <div class="container">
+        <div class="row">
+            <div class="features_items">
+                <div class="col-12">
+                    <h2 class="form-title text-center mb-5"><span>Vehicle Reservation
+                            <hr>
+                        </h2> </span>
+                </div>
+                {% for i in res_vehicle%}
+
+                {% if user_id == i.reserved_vehicle.user.id%}
+             
+            <div class="col-sm-11 ml-5 mr-0">
+                    <div class="row shadow-sm mb-3 mr-0">
+                        <div class="col-sm-4 mr-0 ml-4"><img src="{{i.reserved_vehicle.picture.url  }}" alt="" class="img-fluid"
+                            height="240" width="240">
+                        
+                            
+                         </div>
+                  
+                         <div class="col-sm-4 " button type="button" data-toggle="modal" data-target="#approverejectmodal">
+                           <p> model_name : {{i.reserved_vehicle.model}}</p>
+                           <p> company_name : {{i.reserved_vehicle.company_name}}</p>
+                           <p id="days"></p>
+                           <p id="result"></p>
+                           <p>reserved_date = {{i.pickup_date}} to {{i.dropoff_date}}</p>
+
+                         </div>
+
+                        <script>
+                            function calculateDays() {
+                                var startDate = new Date("{{ i.pickup_date }}"); // Replace with the actual value from your Django model
+                                var endDate = new Date("{{ i.dropoff_date }}"); // Replace with the actual value from your Django model
+                                var timeDifference = endDate.getTime() - startDate.getTime();
+                                var daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+                                var price = {{i.reserved_vehicle.price}}; // Replace with the actual value from your Django model
+                                var totalPrice = daysDifference * price;
+                                document.getElementById("days").innerHTML = "Number of days: " + daysDifference ;
+                                document.getElementById("result").innerHTML =  "Total Price: Rs. " + totalPrice;
+                                
+                            }
+                        
+                            window.onload = function() {
+                                calculateDays();
+                            };
+                        </script> 
+                    
+                
+                      <div class="col fw-bold">
+                   
+                    {% if i.completed == True %}
+                    <div class="completed">
+                        <h5>Your Reservation has completed on {{i.completed_date}}.</h5>
+                        <img src="/static/images/succes.jpg" alt="" class="img-fluid"
+                        height="60" width="60">
+                        <button  type="button" class="btn btn-danger ml-5 my-3" data-toggle="modal" data-target="#delete">Delete</button>
+                    </div>
+                    
+                    
+                       
+                  {%else%}
+                        <p class="text-center">Reservation status</p>
+                        <p class="text-center">{{i.reserve_choice}}</p>
+                        <form method="POST" action="{% url 'reserve_request' %}" enctype='multipart/form-data'> 
+                         {% csrf_token %}
+                            <input type="hidden" name="reservation_id"
+                                value="{{i.id}}">
+                        {% if i.reserve_choice == "Pending"%}
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="0"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                              
+                            <!-- user info modal-->
+                       
+                        </div>
+                       
+                        <button  type="submit" class="btn btn-success ml-5 my-3" name="reservation_status_accepted" value="Accepted">Accept</button>
+                        
+                        <button  type="submit" class="btn btn-danger ml-5 my-3" name="reservation_status_rejected" value="Rejected">Reject</button>
+                        <button  type="button" class="btn btn-primary  my-3" data-toggle="modal" data-target="#hello" style="margin-left: 100px;">User Info</button>
+                       
+
+                        {% elif i.reserve_choice == "Accepted"%}
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width:100%; background:green" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            <!-- user info modal-->
+                       
+                        </div>
+                        <input type="hidden" name="reservation_status" value="Rejected">
+                        <button  type="submit" class="btn btn-danger ml-5 my-3">reject</button>
+                        <button  type="button" class="btn btn-primary ml-5 my-3" data-toggle="modal" data-target="#hello">User Info</button>
+                       
+                        
+                        {%elif i.reserve_choice == "Rejected" %}
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width:100%; background:red"
+                                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <input type="hidden" name="reservation_status" value="Rejected">
+                       
+                        <!-- Button to open the delete popup -->
+                        <input type="checkbox" id="check2" name="check2">
+                        <label for="check2">I understand that this action cannot be undone.</label>
+
+                        <button type="button" class="btn btn-danger" style="margin-left: 120px;" ><a href="delete/{{i.id}}" class="text-white">Delete</a></button>
+                        {%endif%}
+                    </form>
+                        
+
+                
+                        
+                      
+                   {%endif%}
+                
+                   </div>
+
+                          
+                              
+                                   
+                   
+                    </div>
+                </div>
+            </div>
+           </div> 
+
+
+            <div class="modal modal-dialog modal-xl" tabindex="-1" id="hello">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Modal title</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card card-table">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table
+                                                class="table table-hover table-center  datatable">
+                                                <thead>
+                                                    
+                                                    <tr>
+                                                        <th scope="col">Reservation Date</th>
+                                                        <th scope="col">profile_pic</th>
+                                                        <th scope="col">full_name</th>
+                                                        <th scope="col">phone</th>
+                                                        <th scope="col">pick-up date</th>
+                                                        <th scope="col">Drop-off date</th>
+                                                      </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>{{i.reserved_date}}</th>
+                                                        <th>
+                                                            <img src="{{i.renter_user.profile_pic.url  }}"
+                                                                alt="" class="img-fluid" width="50px">
+                                                        </th>
+                                                        
+                                                        <th>{{i.renter_user.fullname}}</th>
+                                                        <th>{{i.renter_user.phone}}</th>
+                                                        <th>{{i.pickup_date}}</th>
+                                                        <th>{{i.dropoff_date}}</th>
+                                                     </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+         
+               {%else%}
+       
+
+           {%endif%}
+     
+           {%endfor%}     
+            </div>
+      </div>
+     </div>
+    
+</section>
+
+
+
+
+{% endblock %}

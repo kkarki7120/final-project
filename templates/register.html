@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | Registration | Vendor {% endblock 'title' %}
+{% block body %}
+    
+   <div class="Register">
+    <h1> <br>  Welcome To DriveNow <br> </h1>
+    <h4>You can Register as customer to rent a car. <br> Register as a vendor if you want to beacome a partner <br> with DriveNow  by placing your car for Rent. </h4>
+    <h3><br> <br><br>Register Now!!!! </h3>
+   
+    <div class="register-btn">
+        <a href="{% url 'register_as_vendor' %}" class="vendor">vendor</a>
+        <a href="{% url 'register_as_customer' %}" class="customer">customer</a>
+    </div>
+    
+
+    </div>
+
+
+</body>
+       
+{% endblock body %}

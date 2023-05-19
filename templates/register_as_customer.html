@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | Register - Renter {% endblock 'title' %}
+{% block body %}
+
+<section class="vendor">  
+
+    <div class="register-form">
+      <div class="reg-text">
+        <h2>Already Have an Account?</h2>
+        <a href="{% url 'login' %}"> <button type="button" class="btn btn-primary">Login</button></a>
+      </div>
+      <form action="{% url 'register_as_customer' %}" method='POST' enctype="multipart/form-data" id="form-reg">
+        {% csrf_token %}
+        {% if error%}
+        <div class="alert alert-danger" role='alert'>
+          {{error}}
+        </div>
+        {% endif %}
+        {% if info %}
+        <div class="alert alert-info" role="alert">
+          {{info}}
+        </div>
+        {% endif %}
+        <h4>Register as Customer</h4>
+        <div class="form-row">
+             <input type="hidden"  name="usertype" value="Renter">
+            
+              <div class="form-group">
+                <label>
+  
+                  <label for="exampleInputEmail1">Profile Picture *</label>
+  
+                </label>
+                <input type="file" class="form-control" name="picture" value="{{values.profile_pic}}" required>
+              </div>
+  
+            </div>
+        <div class="form-row">
+              <div class="col">
+                <label for="exampleInputEmail1">First name *</label>
+                <input type="text" value="{{values.fullname}}" name="fullname" class="form-control m-0" placeholder="Fullname"required>
+              </div>
+  
+            </div>
+        <div class="form-row">
+              <div class="col ">
+                <label for="validationCustomUsername">Username *</label>
+                <input type="text" name="username" value="{{values.username}}" class="form-control m-0" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+              </div>
+        <div class="form-row">      
+              <div class="col">
+                <label for="validationCustomUsername">Phone no *</label>
+                <div class="input-group">
+                  <input type="number" name="phone" value="{{values.phone}}" class="form-control m-0"
+                    id="validationCustomUsername" placeholder="phone no" aria-describedby="inputGroupPrepend" required>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+          <div class="form-group m-0">
+            <label >Address *</label>  
+          
+            <select  class="form-control" i id="inlineFormInputGroup" placeholder="Pick a District..." name="address" required>
+              {%for i in loc %}
+              <option value="{{i.location_name}}">{{i.location_name}}</option>
+              {% endfor%}
+  
+            </select>
+          </div>
+          </div>
+  
+  
+           <div class="form-row">
+            <div class="form-group m-0">
+              <label>Email</label>
+              <input type="email" name="email" class="form-control" value="{{values.email}}" id="exampleInputEmail1"
+                aria-describedby="emailHelp" placeholder="Enter email" required>
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+           </div>
+            <div class="form-row">
+              <label >Password</label>
+              <input type="password" class="form-control m-0" name="password" id="exampleInputPassword1"
+                placeholder="Password" required>
+            </div>
+            <div class="form-row">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                <label class="form-check-label" for="invalidCheck">
+                  Agree to terms and conditions
+                </label>
+                <div class="invalid-feedback">
+                  You must agree before submitting.
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-success" type="submit" id="reg-btn">Submit form</button>
+      </form>
+  
+      
+    </div>
+    
+  </section> 
+
+  {% endblock body %}

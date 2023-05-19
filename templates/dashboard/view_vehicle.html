@@ -1,0 +1,135 @@
+
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | Vendor - Dashboard / view_vehicle {% endblock 'title' %}
+{% block body %}
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Form Elements</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">view vehicle</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+
+<!-- Services-->
+<section class="services" id="services">
+    <div class="heading">
+        <span>Your Vehicles</span>
+    </div>
+
+    {% if  vehicle %}
+
+   
+
+    {% for i in vehicle%}
+     
+        <div class="services-container" id="vendor-vec">
+        <div class="box">
+            <div class="box-img">
+                <img src="{{ i.picture.url}}" alt="" width="210px" height="210px">
+                <h5>{{i.vehicle_number}}</h5>
+             <div class="box-cont"></div>
+                <div class="box-icon">
+                    <div class="icon">
+                    <i class='bx bxs-user'></i>
+                    <p>Seats:{{i.no_of_seats}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-gas-pump'></i>
+                    <p>Fuel Type: {{i.fuel_type}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-car'></i>
+                    <p>vehicle Type: {{i.vehicle_type}}</p>
+                    </div>
+                </div>
+                <div class="box-icon">
+                    <div class="icon">
+                    <i class='bx bxs-cog'></i>
+                    <p>Gear Type: {{i.gear}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-palette' ></i>
+                    <p>Color: {{i.color}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-checkbox-checked'></i>
+                    {% if i.status == "Active"%}
+                    <p>Status: {{i.status}}</p>
+                    {%else%}
+                    <p>Status: {{i.status}}</p>
+                    {% endif %}
+                    </div>          
+                </div>
+             </div>
+             <div class="box-text">
+                <h3>({{i.company_name}})|{{i.model}}</h3>
+                <h4>Price for one day: <span>RS.{{i.price}}</span></h4>
+                <a href="edit/{{i.slug}}"><button class="btn" type="submit" name="" id="">Edit vehicle</button></a>
+                <button type="button" class="btn2 btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+                  Delete Vehicle
+                </button>
+                
+            </div>
+           
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    ...
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+        
+        <div class="modal fade modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="false">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Delete vehicle</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Are you sure you want to delete your vehicle?</p>
+                
+                  <button type="button" class="btn btn-danger"><a href="delete/{{i.id}}" class="white"> Delete </a></button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+      {% else %}
+        
+        <h1>No vehicle listed in your inventory </h1>
+      {% endif %}     
+    
+    
+    </section>
+
+  </main><!-- End #main -->
+
+  {% endblock body %}

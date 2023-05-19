@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | Home {% endblock 'title' %}
+{% block body %}
+<section class="home" id="home">
+  <div class="text">
+      <h1><span>Looking</span> to <br>rent a vehicle</h1>
+      <p>We provide best offers to you for your safe drive.</p>
+      <div class="app-stores">
+          <img src="image/ios.png" alt="">
+          <img src="image/play.png" alt="">
+      </div>
+  </div>
+<div class="form_container">
+  <div class="search">
+      <h2>Search For Vehicle</h2>
+      </div>
+      {% if messages %}
+      <div class="col-12 mb-5">
+        {% if messages %}
+        {% for message in messages%}
+        {% if message.tags == 'error' %}
+        <div class="col-12 col-sm-6 m-auto  alert alert-danger " role="alert">
+            {{message}}
+          </div>
+          {% endif %}
+          {% endfor%}
+        {% endif%}
+        {% if messages %}
+        {% for message in messages%}
+        {% if message.tags == 'success' %}
+        <div class="col-12 col-sm-6 m-auto alert alert-success" role="alert">
+            {{message}}
+          </div>
+          {% endif %}
+          {% endfor%}
+        {% endif%}
+      </div>
+      {% endif%}
+  <form method="POST" action="{% url 'index'%}" class="row row-cols-lg-auto  align-items-center" id="row">
+    {% csrf_token %}
+    
+   
+    <!-- <input type="hidden"  name="seats" value="8"> -->
+      <div class="col-12 px-4 py-4">
+          <label class="visual mx-3" for="inlineFormSelectPref">Choose a District</label>
+          <select class="form-select" id="inlineFormSelectPref" name="pickup" required>
+            <option selected>--Select--</option>
+            {%for i in loc %}
+            <option value="{{i.id}}">{{i.location_name}}</option>
+            {% endfor%}
+          </select>
+        </div>
+      <div class="col-seat">
+          <label class="visual mx-1" for="inlineFormInputGroupUsername">no. of seats</label>
+          <div class="input-group-seat">
+            <input type="number" class="form-control" id="inlineFormInputGroup" placeholder="" name="seats" required >
+          </div>
+      </div>
+      <div class="col-12">
+          <label class="visual mx-3" for="inlineFormInputGroupUsername">Pick-Up Time</label>
+          <div class="input-group">
+            <input type="time" class="form-control" id="inlineFormInputGroupUsername" placeholder="" name="pickuptime" required>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="visual mx-3" for="inlineFormInputGroupUsername">Pick-Up Date</label>
+          <div class="input-group">
+            <input type="date" class="form-control" id="inlineFormInputGroupUsername" placeholder=""  name="pickupdate" required>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="visual mx-3" for="inlineFormInputGroupUsername">Drop-Off Date</label>
+          <div class="input-group">
+            <input type="date" class="form-control" id="inlineFormInputGroupUsername" placeholder="" name="dropoffdate" required>
+          </div>
+        </div>
+    
+      
+    
+      <div class="col-12 ">
+        <button type="submit" class="btn btn-success ">Submit</button>
+      </div>
+    </form>
+  </div>
+  </section>
+
+    <section>
+        <div class="ride">
+            <div class="heading">
+                <h4>How Its Work</h4>
+                <h1>Rent with 3 Easy Steps</h1>
+            </div>
+       </div>
+      <div class="ride-container">
+        <div class="box">
+            <i class='bx bxs-map'></i>
+            <h2>Choose a Location</h2>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos deleniti ex eveniet obcaecati error, dolores voluptas repellendus quasi illo, maiores, voluptatibus temporibus amet sed cumque ea magni distinctio odio repellat!</p>
+        </div>
+    
+        <div class="box">
+            <i class='bx bxs-calendar-check'></i>
+            <h2>Pick-up a Date</h2>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos deleniti ex eveniet obcaecati error, dolores voluptas repellendus quasi illo, maiores, voluptatibus temporibus amet sed cumque ea magni distinctio odio repellat!</p>
+        </div>
+    
+        <div class="box">
+            <i class='bx bxs-bookmark-plus'></i>
+            <h2>Book a Vehicle</h2>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos deleniti ex eveniet obcaecati error, dolores voluptas repellendus quasi illo, maiores, voluptatibus temporibus amet sed cumque ea magni distinctio odio repellat!</p>
+        </div>
+    
+    
+       </div>
+    </section>
+
+    <!-- Services
+  <section class="services" id="services">
+    <div class="heading">
+        <h4>Best Services</h4>
+        <h1>Explore Out Top Deals <br> From Top Rated Dealers</h1>
+    </div>
+    
+    <div class="scroll">   
+        {% if  vehicle %}
+        {% for i in vehicle%} 
+      <div class="services-container">
+        <div class="box">
+            <div class="box-img">
+                <img src="static/images/car.jpg" alt="">
+                <h5 >{{i.vehicle_number}}</h5>
+             <div class="box-cont"></div>
+                <div class="box-icon">
+                    <div class="icon">
+                    <i class='bx bxs-user'></i>
+                    <p>Seats:{{i.no_of_seats}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-gas-pump'></i>
+                    <p>Fuel Type: {{i.fuel_type}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-car'></i>
+                    <p>vehicle Type: {{i.vehicle_type}}</p>
+                    </div>
+                </div>
+                <div class="box-icon">
+                    <div class="icon">
+                    <i class='bx bxs-cog'></i>
+                    <p>Gear Type: {{i.gear}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-palette' ></i>
+                    <p>Color: {{i.color}}</p>
+                    </div>
+                    <div class="icon">
+                    <i class='bx bxs-checkbox-checked'></i>
+                    {% if i.status == "Active"%}
+                    <p>Status: {{i.status}}</p>
+                    {%else%}
+                    <p>Status: {{i.status}}</p>
+                    {% endif %}        
+                </div>
+             </div>
+             <div class="box-text">
+                <h3>({{i.company_name}})|{{i.model}}</h3></h3>
+                <h4>Price for one day: <span>Rs.{{i.price}}</span></h4>
+                <button class="btn" type="submit" name="" id=""><a href="{{i.slug}}">Book Now</a></button>
+            </div>
+            </div>
+        </div>
+        
+      </div>
+    
+    {% endfor %}
+
+    {% else %}
+        
+    <h1>No vehicle currently avialable </h1>
+  {% endif %}
+    </div>
+    
+     
+    </section> -->
+    
+    <!-- About -->
+    <section class="about">
+       <div class="heading">
+        <h4>About US</h4>
+        <h1>Best Customer Experience</h1>
+       </div>
+       <div class="about-container">
+        <div class="about-img">
+            <img src="/static/images/about.png" alt="">
+        </div>
+        <div class="about-text">
+            <span>About Us</span>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, sit animi? Fugit, quidem quod accusamus est suscipit, id molestias a deleniti ipsum maiores aliquam! Voluptatem sapiente in similique cum illo.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet velit enim omnis nulla distinctio iure a possimus numquam necessitatibus sint? Blanditiis quae nesciunt, aliquam voluptate vero aperiam officia optio est!</p>
+            <button type="button" action="submit" class="btn">learn more</button>
+           
+        </div>
+       </div>
+    </section>
+    <section class="contact">
+      <div class="heading">
+       <h4>Contact US</h4>
+       
+      </div>
+      <div class="about-container">
+       <div class="contact-img">
+           <img src="/static/images/Section-Image-6.jpg" alt="" height="400px">
+       </div>
+       <div class="about-text">
+        <h4>Send Feedback to admin</h4>
+        <div class="mb-4 col-sm-8">
+          <form method="POST" action="{% url 'contact'%}" enctype='multipart/form-data'>
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="col">
+                <label for="exampleInputEmail1">Full name</label>
+                <input type="text" value="{{values.name}}" name="name" class="form-control m-0" placeholder="Fullname"required>
+              </div>
+              <div class="form-group m-0">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" value="{{values.email}}" id="exampleInputEmail1"
+                  aria-describedby="emailHelp" placeholder="Enter email" required>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+              </div>
+              <label for="exampleFormControlTextarea1" class="form-label">Messege:</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" name="message" placeholder="Write Messages" rows="5"></textarea>
+                </div>
+              <button type="submit" action="submit" class="btn m-2">Submit</button>
+        </form>
+       </div>
+      </div>
+   </section>
+    <!-- Reviews -->
+    
+    <section class="reviews" id="reviews">
+        <div class="heading">
+            <h4>Reviews</h4>
+            <h1>Whats Our Customer Say</h1>
+        </div>
+        
+            <div class="reviews-container">
+    
+                <div class="scroll1">
+                <div class="box">
+                    <div class="rev-img">
+                        <img src="static/images/reviews.png" alt="">
+                    </div>
+                    <h2> Kushal</h2>
+                    <div class="stars">
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime itaque distinctio, beatae animi eveniet tempora sapiente tempore, quisquam natus, ipsum facere aut delectus. Est culpa, delectus autem ipsa esse inventore!</p>
+                </div>
+                
+                <div class="box">
+                        <div class="rev-img">
+                            <img src="static/images/reviews.png" alt="">
+                        </div>
+                        <h2> Kushal</h2>
+                        <div class="stars">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab adipisci fugiat, rem magni eaque officia beatae ipsa dolorum, autem cum qui alias id porro consequuntur illo optio accusamus iste esse!</p>
+                    </div>
+    
+                    <div class="box">
+                            <div class="rev-img">
+                                <img src="static/images/reviews.png" alt="">
+                            </div>
+                            <h2> Kushal</h2>
+                            <div class="stars">
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit facere voluptates, deleniti ipsum rerum, commodi corrupti quibusdam omnis aperiam odio nulla laboriosam ipsa, dolore sunt aliquam! Excepturi hic animi similique?</p>
+                    </div>
+                    <div class="box">
+                        <div class="rev-img">
+                            <img src="static/images/reviews.png" alt="">
+                        </div>
+                        <h2> Kushal</h2>
+                        <div class="stars">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit facere voluptates, deleniti ipsum rerum, commodi corrupti quibusdam omnis aperiam odio nulla laboriosam ipsa, dolore sunt aliquam! Excepturi hic animi similique?</p>
+                </div>
+                <div class="box">
+                    <div class="rev-img">
+                        <img src="static/images/reviews.png" alt="">
+                    </div>
+                    <h2> Kushal</h2>
+                    <div class="stars">
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit facere voluptates, deleniti ipsum rerum, commodi corrupti quibusdam omnis aperiam odio nulla laboriosam ipsa, dolore sunt aliquam! Excepturi hic animi similique?</p>
+            </div>
+        
+      </div>
+    </section>
+
+{% endblock body %}

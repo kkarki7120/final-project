@@ -1,0 +1,204 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block 'title' %}DriveNOw | Vehicles - Edit Vehicle  {% endblock 'title' %}
+{% block body %}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href=""></a> View vehicles</li>
+          <li class="breadcrumb-item active">edit_vehicle</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+              <img src="{{ values.picture.url }}" alt="Profile" class="rounded-circle">
+              <h2>Honda</h2>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+               
+
+
+              </ul>
+
+                <div class="tab-pane profile-edit pt-3" id="profile-edit">
+
+                  <div class="row mt-3 justify-content-center"> 
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form method="POST" action="{% url 'edit_vehicles' id%}" enctype='multipart/form-data'>
+
+                                                                  {% csrf_token %}
+                                               
+                                               
+                                                                  <div class="col-12 ">
+                                                                      <h2 class="form-title text-center mb-5"><span>Edit Vehicles<hr></span></h2>
+                                                                  </div>
+                                                                  {% if messages %}
+                                                                  {% for message in messages%}
+                                                                  {% if message.tags == 'error' %}
+                                                                  <div class="col-12 col-sm-6 m-auto  alert alert-danger " role="alert">
+                                                                      {{message}}
+                                                                      <span type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></span>
+                                                                       <strong>Warning!</strong> Still on beta stage.
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    {% endfor%}
+                                                                  {% endif%}
+                                              
+                                                              
+                                                                  {% if messages %}
+                                                                  {% for message in messages%}
+                                                                  {% if message.tags == 'success' %}
+                                                                  <div class="col-12 col-sm-6 m-auto alert alert-success" role="alert">
+                                                                      {{message}}
+                                                                      
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    {% endfor%}
+                                                                  {% endif%}
+                                                                  <div class="m-2">
+                                                                  </div>
+                                                                  <div class="col-12 col-sm-16  ">
+                                                                      <div class="form-group">
+                                                                          <label >  
+                                                                        
+                                                                              <h6 class="d-inline ">Vehicles Picture:</h6>
+                                                                       
+                                                                          </label>
+                                                                          <input type="file" class="form-control" name="picture" value="{{values.vehicle_picture }}" required>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="form-row col-12 col-sm-16 my-3">
+                                                                    <div class="col">
+                                                                        <h6>  <label for="exampleInputEmail1">Vehicle Number *</label></h6> 
+                                                                        <input type="text" name="vehicle_number" class="form-control m-0" placeholder="{{i.vehicle_number }}" value="{{values.vehicle_number }}" required>
+                                                                      </div>
+                                                                </div>
+                                                                  <div class="form-row col-12 col-sm-16 my-3">
+                                                                      <div class="col">
+                                                                        <h6><label for="exampleInputEmail1">Model Name *</label></h6>
+                                                                        <input type="text" name="model_name" class="form-control m-0" placeholder="{{values.model_name }}" value="{{values.model_name }}" required>
+                                                                      </div>
+                                                                      <div class="col ">
+                                                                          <h6> <label for="exampleFormControlSelect1">VehicleType *</label></h6>
+                                                                           
+                                                                           <select class="form-control" id="exampleFormControlSelect1"  name="vehicletype" value="{{values.vehicletype }}"  required>
+                                                                               <option value="">Select a vehicle type</option>
+                                                                               {% for i in vehicle_type %}
+                                                                             <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                             {% endfor %}
+                                                                             
+                                                                           </select> 
+                                              
+                                                                         
+                                                                           
+                                                                       </div>
+                                                                
+                                                                    </div>
+                                                                    <div class="form-row col-12 col-sm-16 my-3">
+                                                                      <div class="col">
+                                                                          <h6> <label for="exampleFormControlSelect1">Company Name *</label><h6> 
+                                                                        <select class="form-control" id="exampleFormControlSelect1"  name="company_name" value="{{values.company_name }}" required>
+                                                                                
+                                                                                {% for i in company_name %}
+                                                                                <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                                {% endfor %}
+                                                                              
+                                                                            </select>
+                                                                          
+                                                                        </div>
+                                                                      <div class="col ">
+                                                                          <h6> <label for="exampleFormControlSelect1">FuelType *</label><h6> 
+                                                                          <select class="form-control" id="exampleFormControlSelect1"  name="fuel_type" value="{{values.fuel_type }}" required>
+                                                                              {% for i in fuel_type %}
+                                                                              <option value="{{ i.id }}">{{ i.name }}</option>
+                                                                              {% endfor %}
+                                                                            
+                                                                          </select>
+                                                                      </div>
+                                                                    </div>
+                                                                  <div class="form-row col-12 col-sm-16 my-3">
+                                                                      <div class="col">
+                                                                          <h6>  <label for="exampleInputEmail1">Price(per day) *</label></h6> 
+                                                                          <input type="number" name="price" class="form-control m-0" placeholder="Eg: 2000" value="{{values.price }}" required>
+                                                                        </div>
+                                                                  </div>
+                                                                  <div class="col-12 col-sm-16 m-auto ">
+                                                                      <div class="form-group my-3">
+                                                                          <h6><label for="exampleFormControlSelect1">color *</label></h6>
+                                                                          <input type="text" class="form-control" name="color" placeholder="Eg: Black" value="{{values.color }}" required>
+                                                                      </div>
+                                                                  </div>
+                                                                
+                                                                  <div class="form-row col-12 col-sm-16 my-3">
+                                                                      <div class="col form-group">
+                                                                          <h6><label for="exampleFormControlSelect1">no of seats * </label></h6>
+                                                                          <input type="number" class="form-control" name="seats" placeholder="Eg: 4" value="{{values.seats }}" required>
+                                                                          </select>
+                                                                        </div>
+                                                                        <div class="col ">
+                                                                          <h6><label for="exampleFormControlSelect1">GearType *</label></h6>
+                                                                          <select class="form-control" id="exampleFormControlSelect1"  name="geartype" value="{{values.geartype }}" required>
+                                                                            <option value="Manual">Manual</option>
+                                                                            <option value="Auto">Auto</option>
+                                                                          </select>
+                                                                        </div>
+                                                                  </div>
+                                                                  <div class="col-12 col-sm-16 my-3">
+                                                                      <div class="form-group">
+                                                                          <h6><label for="exampleFormControlSelect1">Status *</label></h6>
+                                                                          <select class="form-control" id="exampleFormControlSelect1"  name="status" value="{{values.status }}">
+                                                                            <option value="Active">Active</option>
+                                                                            <option value="Inactive">Inactive</option>
+                                                                          </select>
+                                                                          <small id="emailHelp" class="form-text text-muted">Only the active status vehicle will be displayed to the renter.</small>
+                                                                      </div>
+                                                                  </div>
+                                                               
+                                              
+                                                                  
+                                                                      <button type="submit" class="btn btn-primary my-3">Edit vehicle</button>
+                <!-- End Profile Edit Form -->
+
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-settings">
+
+                </div>
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock body %}
